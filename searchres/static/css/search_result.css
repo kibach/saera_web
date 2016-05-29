@@ -41,6 +41,11 @@
     font-family: georgia;
 }
 
+#pagin{
+    margin-left: 6%;
+    font-family: georgia;
+}
+
 body{
     margin: 0;
     height: 100%;
