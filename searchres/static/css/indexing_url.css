@@ -1,5 +1,6 @@
 textarea{
     margin-top: 8%;
+    font-family: georgia;
 }
 
 #choosef{
@@ -11,6 +12,7 @@ textarea{
     margin-top: 1%;
     margin-left: 6%;
     padding: 5px 123px;
+    font-family: georgia;
 }
 
 body{
@@ -18,5 +20,11 @@ body{
     height: 100%;
     background-image: url(bg3.jpg);
     background-size: cover;
+
 }
 
+#indexNav{
+    opacity: 0.7;
+    filter: alpha(Opacity=70);
+    font-family: georgia;
+}
