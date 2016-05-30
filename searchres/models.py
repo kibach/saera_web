@@ -2,9 +2,9 @@ from django.db import models
 
 
 class Document(models.Model):
-    url = models.CharField(max_length=2000, db_index=True)
-    domain = models.CharField(max_length=500, db_index=True)
-    title = models.CharField(max_length=1000)
+    url = models.CharField(max_length=255, db_index=True)
+    domain = models.CharField(max_length=255, db_index=True)
+    title = models.CharField(max_length=255)
     language = models.CharField(max_length=20)
     encoding = models.CharField(max_length=20)
     contents = models.TextField()
@@ -13,7 +13,7 @@ class Document(models.Model):
 
 
 class Stem(models.Model):
-    stem = models.CharField(max_length=500, unique=True)
+    stem = models.CharField(max_length=255, unique=True)
 
 
 class DocumentMap(models.Model):
@@ -30,11 +30,11 @@ class DocumentStemMap(models.Model):
 
 class Setting(models.Model):
     name = models.CharField(max_length=100)
-    value = models.CharField(max_length=1000)
+    value = models.CharField(max_length=255)
 
 
 class Queue(models.Model):
-    url = models.CharField(max_length=2000)
+    url = models.CharField(max_length=255)
     depth = models.IntegerField()
     parent = models.IntegerField()
 
