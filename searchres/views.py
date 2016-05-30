@@ -60,7 +60,7 @@ def search_result(request):
                 term_ratings[relation.doc_id] = relation.rank_component
 
         for doc_id in term_ratings:
-            term_ratings[doc_id] *= stem.idf
+            term_ratings[doc_id] = term_ratings[doc_id] / (2 + term_ratings[doc_id]) * stem.idf
             if doc_id in doc_ratings:
                 doc_ratings[doc_id] += term_ratings[doc_id]
             else:
