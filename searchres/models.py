@@ -26,3 +26,21 @@ class DocumentStemMap(models.Model):
     stem = models.ForeignKey(Stem, db_index=True)
     count = models.IntegerField()
     type = models.IntegerField()
+
+
+class Setting(models.Model):
+    name = models.CharField(max_length=100)
+    value = models.CharField(max_length=1000)
+
+
+class Queue(models.Model):
+    url = models.CharField(max_length=2000)
+    depth = models.IntegerField()
+    parent = models.IntegerField()
+
+
+class IndexerTask(models.Model):
+    created_at = models.DateTimeField()
+    type = models.CharField(max_length=100)
+    parameters = models.TextField()
+    completed = models.BooleanField()
