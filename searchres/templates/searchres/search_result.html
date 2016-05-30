@@ -14,22 +14,6 @@
     <title></title>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-7">
-                <div id="custom-search-input">
-                    <div class="input-group col-md-12">
-                        <input type="text" class="form-control input-lg" placeholder="Search"/>
-                        <span class="input-group-btn">
-                            <button class="btn btn-info btn-lg" type="button">
-                                <i class="glyphicon glyphicon-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <nav id="searchNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -58,14 +42,20 @@
 
     <div class="container">
         <div class="row">
-            <h3>Was found results: (some num here) </h3>
-        </div>
-
-        <div class="row">
-            <div id="foundref" class="media">
-                <div class="media-body">
-                    <h4 class="media-heading">Middle aligned media</h4>
-                </div>
+            <div class="col-md-7">
+                <form method="post">
+                    <div id="custom-search-input">
+                        <div class="input-group col-md-12">
+                            <input type="text" class="form-control input-lg" name="query" value="{{ query }}"/>
+                            <span class="input-group-btn">
+                                <button class="btn btn-info btn-lg" type="submit">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    {% csrf_token %}
+                </form>
             </div>
         </div>
 
@@ -74,7 +64,7 @@
             <div class="media">
                 <div class="media-left">
                     <a href="#">
-                        <img class="media-object" src="http://placehold.it/32x32" alt="Placeholder">
+                        <img class="media-object" src="http://placehold.it/48x48" alt="Placeholder">
                     </a>
                 </div>
                 <div class="media-body">
@@ -84,8 +74,8 @@
             </div>
         </div>
         {% endfor %}
-        
-        <div class="row" style="text-align: center;">
+
+        <!--div class="row" style="text-align: center;">
             <ul class="pagination" id="pagin">
                 <li class="active"><a href="#">1</a></li>
                 <li><a href="#">2</a></li>
@@ -93,7 +83,7 @@
                 <li><a href="#">4</a></li>
                 <li><a href="#">5</a></li>
             </ul>
-        </div>
+        </div-->
     </div>
 
 </body>

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from langdetect import detect
 from searchres.models import *
 import snowballstemmer
@@ -30,6 +30,9 @@ LANGUAGES = {
 
 
 def search_result(request):
+    if not request.method == "POST":
+        return redirect('/')
+
     query = request.POST.get('query')
     q_words = query.split()
     stemmed_words = []
@@ -41,59 +44,41 @@ def search_result(request):
         else:
             stemmed_words.append(word)
 
-    doc_cnt = Document.objects.count()
+    doc_ratings = {}
 
-    avg_fl = {'1': 0, '2': 0}
-    for doc in Document.objects.all():
-        for field_id in ['1', '2']:
-            for entry in DocumentStemMap.objects.filter(doc=doc, type=field_id):
-                avg_fl[field_id] += entry.count * len(entry.stem.stem)
+    for word in stemmed_words:
+        try:
+            stem = Stem.objects.get(stem=word)
+        except:
+            continue
 
-    for field_id in ['1', '2']:
-        avg_fl[field_id] = avg_fl[field_id] / doc_cnt
+        term_ratings = {}
+        for relation in DocumentStemMap.objects.filter(stem=stem):
+            if relation.doc_id in term_ratings:
+                term_ratings[relation.doc_id] += relation.rank_component
+            else:
+                term_ratings[relation.doc_id] = relation.rank_component
 
-    rated_docs = []
+        for doc_id in term_ratings:
+            term_ratings[doc_id] *= stem.idf
+            if doc_id in doc_ratings:
+                doc_ratings[doc_id] += term_ratings[doc_id]
+            else:
+                doc_ratings[doc_id] = term_ratings[doc_id]
 
-    for doc in Document.objects.all():
-        doc_fl = {'1': 0, '2': 0}
-        w = 0
+        del term_ratings
 
-        for field_id in ['1', '2']:
-            for entry in DocumentStemMap.objects.filter(doc=doc, type=field_id):
-                doc_fl[field_id] += entry.count * len(entry.stem.stem)
+    rated_docs = doc_ratings.items()
 
-        for word in stemmed_words:
-            try:
-                stem_obj = Stem.objects.get(stem=word)
-            except models.ObjectDoesNotExist:
-                continue
-
-            cw = 0
-            for field_id in ['1', '2']:
-                occurs = DocumentStemMap.objects.filter(doc=doc, stem=stem_obj, type=field_id)
-                if occurs.exists():
-                    occurs_word = occurs.first()
-                    occurs_count = occurs_word.count
-                else:
-                    occurs_count = 0
-
-                comp = occurs_count * (3 - int(field_id)) / (0.25 + 0.75 * (doc_fl[field_id] / avg_fl[field_id]))
-                if comp < 0:
-                    comp = 0
-
-                cw += comp
-
-            df = DocumentStemMap.objects.filter(stem=stem_obj).values('doc_id').annotate(tmp=models.Count('type')).count()
-            w += cw / (0.5 + cw) * math.log((doc_cnt - df + 0.5) / (df + 0.5))
-
-        rated_docs.append((doc.id, w))
-
-    rated_docs.sort(key=lambda x: x[1])
+    rated_docs.sort(key=lambda x: x[1], reverse=True)
     results = []
     for doc_id in rated_docs[:10]:
         results.append(Document.objects.get(id=doc_id[0]))
 
-    return render(request, 'searchres/search_result.html', {'documents': results})
+    return render(request, 'searchres/search_result.html', {
+        'documents': results,
+        'query': query,
+    })
 
 
 def home_page(request):

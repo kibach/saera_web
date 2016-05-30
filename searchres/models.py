@@ -14,6 +14,7 @@ class Document(models.Model):
 
 class Stem(models.Model):
     stem = models.CharField(max_length=255, unique=True)
+    idf = models.FloatField()
 
 
 class DocumentMap(models.Model):
@@ -26,6 +27,7 @@ class DocumentStemMap(models.Model):
     stem = models.ForeignKey(Stem, db_index=True)
     count = models.IntegerField()
     type = models.IntegerField()
+    rank_component = models.FloatField()
 
 
 class Setting(models.Model):
