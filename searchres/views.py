@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from langdetect import detect
+from langdetect import detect, detect_langs
 from searchres.models import *
 import snowballstemmer
 import math
@@ -37,12 +37,12 @@ def search_result(request):
     q_words = query.split()
     stemmed_words = []
     for word in q_words:
-        lng = detect(word)
-        if lng in LANGUAGES:
-            lng = LANGUAGES[lng].lower()
-            stemmed_words.append(snowballstemmer.stemmer(lng).stemWord(word))
-        else:
-            stemmed_words.append(word)
+        lngs = detect_langs(word)
+        correct_lng = 'english'
+        for lng in lngs:
+            if lng in LANGUAGES and LANGUAGES[lng].lower() in snowballstemmer.algorithms():
+                correct_lng = LANGUAGES[lng].lower()
+        stemmed_words.append(snowballstemmer.stemmer(correct_lng).stemWord(word))
 
     doc_ratings = {}
 
