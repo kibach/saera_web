@@ -40,12 +40,10 @@
 }
 
 #foundref{
-    margin-left: 6%;
     font-family: georgia;
 }
 
 #pagin{
-    margin-left: 6%;
     font-family: georgia;
 }
 
@@ -59,6 +57,5 @@ body{
 h3{
     font-family: georgia;
     font-size: 100%;
-    margin-left: 6%;
     font-color: #999999;
 }

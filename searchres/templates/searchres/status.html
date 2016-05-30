@@ -14,8 +14,6 @@
     <title></title>
 </head>
 <body>
-    <h4 id="t1"> Web - pages Count: </h4>
-    <h4 id="t2"> Index Size (Bytes):</h4>
     <nav id="searchNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -42,39 +40,47 @@
         <!-- /.container-fluid -->
         </nav>
 
-    <div class="row" id="heading">
-        <div class="panel panel-primary filterable">
-            <div class="panel-heading">
-                <h3 class="panel-title">Web - pages in Index</h3>
-                <div class="pull-right">
-                    <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+    <div class="container">
+        <div class="row">
+            <h4 id="t1"> Web - pages Count: </h4>
+            <h4 id="t2"> Index Size (Bytes):</h4>
+        </div>
+        <div class="row" id="heading">
+            <div class="panel panel-primary filterable">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Web - pages in Index</h3>
+                    <div class="pull-right">
+                        <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+                    </div>
                 </div>
+                <table class="table">
+                    <thead>
+                        <tr class="filters">
+                            <th><input type="text" class="form-control" placeholder="№" disabled></th>
+                            <th><input type="text" class="form-control" placeholder="URL" disabled></th>
+                            <th><button class="btn btn-default" id ="globdel" type="submit">Remove Satisfying Pages</button></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>https//www.dvakosyk.lyg</td>
+                            <td><button class="btn btn-default" id ="del" type="submit">Delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <table class="table">
-                <thead>
-                    <tr class="filters">
-                        <th><input type="text" class="form-control" placeholder="№" disabled></th>
-                        <th><input type="text" class="form-control" placeholder="URL" disabled></th>
-                        <th><button class="btn btn-default" id ="globdel" type="submit">Remove Satisfying Pages</button></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>https//www.dvakosyk.lyg</td>
-                        <td><button class="btn btn-default" id ="del" type="submit">Delete</button></td>
-                    </tr>
-                </tbody>
-            </table>
+        </div>
+
+        <div class="row" style="text-align: center;">
+            <ul class="pagination" id="pagin">
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+            </ul>
         </div>
     </div>
-
-    <ul class="pagination" id="pagin">
-      <li class="active"><a href="#">1</a></li>
-      <li><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
-    </ul>
 </body>
 </html>
