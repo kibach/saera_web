@@ -36,7 +36,7 @@ def search_result(request):
     for word in q_words:
         lng = detect(word)
         if lng in LANGUAGES:
-            lng = LANGUAGES[lng]
+            lng = LANGUAGES[lng].lower()
             stemmed_words.append(snowballstemmer.stemmer(lng).stemWord(word))
         else:
             stemmed_words.append(word)
@@ -83,7 +83,7 @@ def search_result(request):
 
                 cw += comp
 
-            df = DocumentStemMap.objects.filter(stem=stem_obj).count()
+            df = DocumentStemMap.objects.filter(stem=stem_obj).values('doc_id').annotate(tmp=models.Count('type')).count()
             w += cw / (0.5 + cw) * math.log((doc_cnt - df + 0.5) / (df + 0.5))
 
         rated_docs.append((doc.id, w))

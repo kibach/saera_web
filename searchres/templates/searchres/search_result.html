@@ -68,7 +68,23 @@
                 </div>
             </div>
         </div>
-        {{ documents }}
+
+        {% for doc in documents %}
+        <div class="row">
+            <div class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object" src="http://placehold.it/32x32" alt="Placeholder">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading"><a href="{{ doc.url }}" target="_blank">{{ doc.title }}</a></h4>
+                    {{ doc.plaintext|truncatewords:10 }}...
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
         <div class="row" style="text-align: center;">
             <ul class="pagination" id="pagin">
                 <li class="active"><a href="#">1</a></li>
