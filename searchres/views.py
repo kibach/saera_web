@@ -77,7 +77,7 @@ def search_result(request):
                 else:
                     occurs_count = 0
 
-                comp = occurs_count * (3 - field_id) / (0.25 + 0.75 * (doc_fl[field_id] / avg_fl[field_id]))
+                comp = occurs_count * (3 - int(field_id)) / (0.25 + 0.75 * (doc_fl[field_id] / avg_fl[field_id]))
                 if comp < 0:
                     comp = 0
 
