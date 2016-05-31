@@ -149,7 +149,7 @@ def status(request):
     return render(request, 'searchres/status.html', {
         'doc_cnt': doc_cnt,
         'ind_size': ind_size,
-        'documents': Document.objects.all().order_by(Document.pk),
+        'documents': Document.objects.all().order_by('id'),
     })
 
 
