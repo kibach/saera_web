@@ -11,15 +11,24 @@ class Document(models.Model):
     plaintext = models.TextField()
     indexed_at = models.DateTimeField()
 
+    def __str__(self):
+        return self.title + ' (' + self.url + ')'
+
 
 class Stem(models.Model):
     stem = models.CharField(max_length=255, unique=True)
     idf = models.FloatField()
 
+    def __str__(self):
+        return self.stem + ' / ' + str(self.idf)
+
 
 class DocumentMap(models.Model):
     A = models.IntegerField(db_index=True)
     B = models.IntegerField(db_index=True)
+
+    def __str__(self):
+        return self.A + ' -> ' + self.B
 
 
 class DocumentStemMap(models.Model):
@@ -29,10 +38,16 @@ class DocumentStemMap(models.Model):
     type = models.IntegerField()
     rank_component = models.FloatField()
 
+    def __str__(self):
+        return self.doc.title + ' -> ' + self.stem.stem
+
 
 class Setting(models.Model):
     name = models.CharField(max_length=100)
     value = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name + ' = ' + self.value
 
 
 class Queue(models.Model):
@@ -40,9 +55,15 @@ class Queue(models.Model):
     depth = models.IntegerField()
     parent = models.IntegerField()
 
+    def __str__(self):
+        return self.url + ' / ' + str(self.depth)
+
 
 class IndexerTask(models.Model):
     created_at = models.DateTimeField()
     type = models.CharField(max_length=100)
     parameters = models.TextField()
     completed = models.BooleanField()
+
+    def __str__(self):
+        return self.type + ' / Completed: ' + str(self.completed)
