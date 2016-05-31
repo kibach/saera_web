@@ -28,7 +28,7 @@ class DocumentMap(models.Model):
     B = models.IntegerField(db_index=True)
 
     def __str__(self):
-        return self.A + ' -> ' + self.B
+        return str(self.A) + ' -> ' + str(self.B)
 
 
 class DocumentStemMap(models.Model):
