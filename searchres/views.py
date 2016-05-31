@@ -4,8 +4,8 @@ from searchres.models import *
 from django.db.models import *
 from django.db.models.functions import Length
 from django.http import HttpResponse
+from django.core.validators import URLValidator
 import snowballstemmer
-import math
 
 
 LANGUAGES = {
@@ -89,7 +89,51 @@ def home_page(request):
 
 
 def indexing_url(request):
-    return render(request, 'searchres/indexing_url.html', {})
+    if request.method == "POST":
+        uv = URLValidator(schemes=['http', 'https'])
+        form = request.POST.get('urls')
+        was_added = False
+        if form:
+            for url in form.split('\n'):
+                url = url.strip()
+                if not uv(url):
+                    continue
+                qi = Queue()
+                qi.url = url
+                qi.parent = 0
+                qi.depth = 0
+                qi.save()
+                was_added = True
+
+        urlfile = request.FILES.get('urlfile')
+        if urlfile:
+            for url in urlfile:
+                url = url.strip()
+                if not uv(url):
+                    continue
+                qi = Queue()
+                qi.url = url
+                qi.parent = 0
+                qi.depth = 0
+                qi.save()
+                was_added = True
+
+        if was_added:
+            task = IndexerTask()
+            task.type = 'reload_queue'
+            task.parameters = ''
+            task.completed = False
+            task.created_at = datetime.datetime.now()
+            task.save()
+            msg = 'OK'
+        else:
+            msg = 'No valid URLs found'
+
+    else:
+        msg = None
+    return render(request, 'searchres/indexing_url.html', {
+        'msg': msg
+    })
 
 
 def editing_url(request):
