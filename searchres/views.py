@@ -96,7 +96,9 @@ def indexing_url(request):
         if form:
             for url in form.split('\n'):
                 url = url.strip()
-                if not uv(url):
+                try:
+                    uv(url)
+                except:
                     continue
                 qi = Queue()
                 qi.url = url
@@ -109,7 +111,9 @@ def indexing_url(request):
         if urlfile:
             for url in urlfile:
                 url = url.strip()
-                if not uv(url):
+                try:
+                    uv(url)
+                except:
                     continue
                 qi = Queue()
                 qi.url = url
