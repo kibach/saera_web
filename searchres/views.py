@@ -145,7 +145,7 @@ def status(request):
         return redirect('/admin/')
 
     doc_cnt = Document.objects.count()
-    ind_size = Document.objects.aggregate(Sum(Length(Document.contents)))
+    ind_size = Document.objects.aggregate(Sum(Length('contents')))
     return render(request, 'searchres/status.html', {
         'doc_cnt': doc_cnt,
         'ind_size': ind_size,
