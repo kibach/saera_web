@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from langdetect import detect, detect_langs
 from searchres.models import *
+from django.db.models import *
+from django.db.models.functions import Length
+from django.http import HttpResponse
 import snowballstemmer
 import math
 
@@ -94,8 +97,43 @@ def editing_url(request):
 
 
 def status(request):
-    return render(request, 'searchres/status.html', {})
+    if not request.user.is_authenticated():
+        return redirect('/admin/')
+
+    doc_cnt = Document.objects.count()
+    ind_size = Document.objects.aggregate(Sum(Length(Document.contents)))
+    return render(request, 'searchres/status.html', {
+        'doc_cnt': doc_cnt,
+        'ind_size': ind_size,
+        'documents': Document.objects.all().order_by(Document.pk),
+    })
 
 
 def about(request):
     return render(request, 'searchres/about.html', {})
+
+
+def url_delete(request, urlid):
+    if not request.user.is_authenticated():
+        return redirect('/admin/')
+
+    del_ur = Document.url.get(pk=urlid)
+    DocumentMap.objects.filter(A=del_ur).delete()
+    DocumentMap.objects.filter(B=del_ur).delete()
+    DocumentStemMap.objects.filter(doc=del_ur).delete()
+    del_ur.delete()
+    return redirect('/status/')
+
+
+def url_html(request, urlid):
+    doc = Document.objects.get(pk=urlid)
+    resp = HttpResponse(content_type='text/html')
+    resp.write(doc.contents)
+    return resp
+
+
+def url_plain(request, urlid):
+    doc = Document.objects.get(pk=urlid)
+    resp = HttpResponse(content_type='text/plain')
+    resp.write(doc.plaintext)
+    return resp

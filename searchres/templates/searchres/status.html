@@ -42,13 +42,13 @@
 
     <div class="container">
         <div class="row">
-            <h4 id="t1"> Web - pages Count: </h4>
-            <h4 id="t2"> Index Size (Bytes):</h4>
+            <h4 id="t1"> Web pages Count: {{ doc_cnt }}</h4>
+            <h4 id="t2"> Index Size (Bytes): {{ ind_size }}</h4>
         </div>
         <div class="row" id="heading">
             <div class="panel panel-primary filterable">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Web - pages in Index</h3>
+                    <h3 class="panel-title">Web pages in Index</h3>
                     <div class="pull-right">
                         <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
                     </div>
@@ -58,21 +58,35 @@
                         <tr class="filters">
                             <th><input type="text" class="form-control" placeholder="№" disabled></th>
                             <th><input type="text" class="form-control" placeholder="URL" disabled></th>
-                            <th><button class="btn btn-default" id ="globdel" type="submit">Remove Satisfying Pages</button></th>
+                            <th><button class="btn btn-default" id ="globdel" type="submit">Remove All Pages</button></th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for doc in documents %}
                         <tr>
-                            <td>1</td>
-                            <td>https//www.dvakosyk.lyg</td>
-                            <td><button class="btn btn-default" id ="del" type="submit">Delete</button></td>
+                            <td>{{ doc.id }}</td>
+                            <td>{{ doc.url }}</td>
+                            <td>
+                                <ul class="nav nav-pills">
+                                    <li>
+                                        <a href="/status/delete/{{ doc.id }}" class="btn btn-danger">Delete</a>
+                                    </li>
+                                    <li>
+                                        <a href="/status/html/{{ doc.id }}" class="btn btn-danger">Cached HTML</a>
+                                    </li>
+                                    <li>
+                                        <a href="/status/plain/{{ doc.id }}" class="btn btn-danger">Cached Plaintext</a>
+                                    </li>
+                                </ul>
+                            </td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <div class="row" style="text-align: center;">
+        <!--div class="row" style="text-align: center;">
             <ul class="pagination" id="pagin">
                 <li class="active"><a href="#">1</a></li>
                 <li><a href="#">2</a></li>
@@ -80,7 +94,7 @@
                 <li><a href="#">4</a></li>
                 <li><a href="#">5</a></li>
             </ul>
-        </div>
+        </div-->
     </div>
 </body>
 </html>

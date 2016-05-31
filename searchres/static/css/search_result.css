@@ -59,3 +59,7 @@ h3{
     font-size: 100%;
     font-color: #999999;
 }
+
+.result-row {
+    margin-top: 10px;
+}
