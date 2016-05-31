@@ -99,7 +99,7 @@ def search_result(request):
 
     rated_docs = doc_ratings.items()
 
-    rated_docs.sort(key=lambda x: x[1], reverse=True)
+    rated_docs.sort(key=lambda x: x[1])
     results = []
     for doc_id in rated_docs[:10]:
         results.append(Document.objects.get(id=doc_id[0]))
