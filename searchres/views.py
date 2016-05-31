@@ -40,13 +40,24 @@ def search_result(request):
     query = request.POST.get('query')
     q_words = query.split()
     stemmed_words = []
+    filters = []
     for word in q_words:
-        lngs = detect_langs(word)
-        correct_lng = 'english'
-        for lng in lngs:
-            if lng in LANGUAGES and LANGUAGES[lng].lower() in snowballstemmer.algorithms():
-                correct_lng = LANGUAGES[lng].lower()
-        stemmed_words.append(snowballstemmer.stemmer(correct_lng).stemWord(word))
+        if word.startswith('domain:'):
+            filters.append(('domain', word.replace('domain:', '').lower()))
+        elif word.startswith('lang:'):
+            filters.append(('lang', word.replace('lang:', '').lower()))
+        elif word.startswith('encoding:'):
+            filters.append(('encoding', word.replace('encoding:', '').lower()))
+        else:
+            try:
+                lngs = detect_langs(word)
+                correct_lng = 'english'
+                for lng in lngs:
+                    if lng in LANGUAGES and LANGUAGES[lng].lower() in snowballstemmer.algorithms():
+                        correct_lng = LANGUAGES[lng].lower()
+                stemmed_words.append(snowballstemmer.stemmer(correct_lng).stemWord(word))
+            except:
+                stemmed_words.append(word)
 
     doc_ratings = {}
 
@@ -58,6 +69,17 @@ def search_result(request):
 
         term_ratings = {}
         for relation in DocumentStemMap.objects.filter(stem=stem):
+            for fil in filters:
+                if fil[0] == 'domain':
+                    if not fil[1] in relation.doc.domain:
+                        continue
+                elif fil[0] == 'lang':
+                    if not fil[1] == relation.doc.language:
+                        continue
+                elif fil[0] == 'encoding':
+                    if not fil[1] == relation.doc.encoding:
+                        continue
+            
             if relation.doc_id in term_ratings:
                 term_ratings[relation.doc_id] += relation.rank_component
             else:
@@ -166,7 +188,7 @@ def url_delete(request, urlid):
     if not request.user.is_authenticated():
         return redirect('/admin/')
 
-    del_ur = Document.url.get(pk=urlid)
+    del_ur = Document.objects.get(pk=urlid)
     DocumentMap.objects.filter(A=del_ur).delete()
     DocumentMap.objects.filter(B=del_ur).delete()
     DocumentStemMap.objects.filter(doc=del_ur).delete()
