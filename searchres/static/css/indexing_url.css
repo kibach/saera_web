@@ -26,3 +26,7 @@ body{
     filter: alpha(Opacity=70);
     font-family: georgia;
 }
+
+.alert {
+    margin-top: 45px;
+}
