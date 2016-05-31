@@ -79,11 +79,14 @@ def search_result(request):
                 elif fil[0] == 'encoding':
                     if not fil[1] == relation.doc.encoding:
                         continue
-            
+
+            rc = relation.rank_component
+            if rc < 0:
+                rc = 0
             if relation.doc_id in term_ratings:
-                term_ratings[relation.doc_id] += relation.rank_component
+                term_ratings[relation.doc_id] += rc
             else:
-                term_ratings[relation.doc_id] = relation.rank_component
+                term_ratings[relation.doc_id] = rc
 
         for doc_id in term_ratings:
             term_ratings[doc_id] = term_ratings[doc_id] / (2 + term_ratings[doc_id]) * stem.idf
