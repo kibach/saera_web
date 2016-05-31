@@ -63,9 +63,16 @@
         <div class="row result-row">
             <div class="media">
                 <div class="media-left">
-                    <a href="#">
-                        <img class="media-object" src="http://placehold.it/48x48" alt="Placeholder">
-                    </a>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Cache
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="/status/html/{{ doc.id }}" target="_blank">HTML cache</a></li>
+                            <li><a href="/status/plain/{{ doc.id }}" target="_blank">Plaintext cache</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading"><a href="{{ doc.url }}" target="_blank">{{ doc.title }}</a></h4>
