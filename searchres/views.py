@@ -69,16 +69,20 @@ def search_result(request):
 
         term_ratings = {}
         for relation in DocumentStemMap.objects.filter(stem=stem):
+            corresponding = True
             for fil in filters:
                 if fil[0] == 'domain':
                     if not fil[1] in relation.doc.domain:
-                        continue
+                        corresponding = False
                 elif fil[0] == 'lang':
                     if not fil[1] == relation.doc.language:
-                        continue
+                        corresponding = False
                 elif fil[0] == 'encoding':
                     if not fil[1] == relation.doc.encoding:
-                        continue
+                        corresponding = False
+
+            if not corresponding:
+                continue
 
             rc = relation.rank_component
             if rc < 0:
