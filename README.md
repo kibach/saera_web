@@ -1,12 +1,19 @@
 # Установка
 1. Обновляем данные из репов (я обновил миграции, если изменяли чето то просто searchres/migrations перекачать)
 2. Ставим модули, mysql, все вот это.
-   ```sudo apt install mysql-server
-   pip install daemonize mysqldb django peewee snowballstemmer langdetect beautifulsoup4```
+   ```
+   sudo apt install mysql-server
+   
+   pip install daemonize mysqldb django peewee snowballstemmer langdetect beautifulsoup4
+   ```
    MySQL при установке должна была запросить пароль, вспоминаем его.
-   ```mysql -u root -p<passwd>
+   ```
+   mysql -u root -p<passwd>
+   
    (внутри)
-   CREATE DATABASE saera_search CHARACTER SET utf8 COLLATE utf8_general_ci;```
+   
+   CREATE DATABASE saera_search CHARACTER SET utf8 COLLATE utf8_general_ci;
+   ```
    saera_search -- имя вашей новой бд.
 3. Короче в saera_web/searcheng/settings.py и saera_indexer/saera.cfg прописываем настройки бд, порт и хост без изменений, логин root, пароль тот что ставили на 1 шаге, и имя бд тоже оттуда. Сохраняем.
 4. Внутри saera_web
