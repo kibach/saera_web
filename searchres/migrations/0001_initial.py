@@ -18,9 +18,9 @@ class Migration(migrations.Migration):
             name='Document',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('url', models.CharField(db_index=True, max_length=2000)),
-                ('domain', models.CharField(db_index=True, max_length=500)),
-                ('title', models.CharField(max_length=1000)),
+                ('url', models.CharField(db_index=True, max_length=255)),
+                ('domain', models.CharField(db_index=True, max_length=255)),
+                ('title', models.CharField(max_length=255)),
                 ('language', models.CharField(max_length=20)),
                 ('encoding', models.CharField(max_length=20)),
                 ('contents', models.TextField()),
@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
             name='Queue',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('url', models.CharField(max_length=2000)),
+                ('url', models.CharField(max_length=255)),
                 ('depth', models.IntegerField()),
                 ('parent', models.IntegerField()),
             ],
@@ -69,14 +69,14 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
-                ('value', models.CharField(max_length=1000)),
+                ('value', models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
             name='Stem',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('stem', models.CharField(max_length=500, unique=True)),
+                ('stem', models.CharField(max_length=255, unique=True)),
             ],
         ),
         migrations.AddField(
